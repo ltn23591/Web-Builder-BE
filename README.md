@@ -74,41 +74,68 @@ Với Mau, bạn có thể triển khai ứng dụng của mình chỉ trong và
 
 NestJS tuân theo kiến trúc Module, Controller và Service. Dưới đây là cách sử dụng cơ bản:
 
-### 1. Controller (Định tuyến - Routing)
-Controllers có nhiệm vụ xử lý các HTTP request từ client và trả về response. Chúng định nghĩa các Route (đường dẫn).
+### 1. Route (Định tuyến)
+Trong NestJS, định tuyến (Routing) được xử lý thông qua các decorator bên trong Controller. Dưới đây là các loại route phổ biến:
+
+**Các HTTP Methods cơ bản:**
+```typescript
+@Get() // Lấy dữ liệu
+@Post() // Tạo dữ liệu mới
+@Put() // Cập nhật toàn bộ dữ liệu
+@Patch() // Cập nhật một phần dữ liệu
+@Delete() // Xóa dữ liệu
+```
+
+**Nhận tham số từ Route (Route Parameters & Query):**
+```typescript
+import { Controller, Get, Param, Query, Body, Post } from '@nestjs/common';
+
+@Controller('products')
+export class ProductsController {
+  // VD: GET /products?sort=asc&limit=10
+  @Get()
+  findAll(@Query('sort') sort: string, @Query('limit') limit: number) {
+    return `Lấy danh sách sản phẩm. Sort: ${sort}, Limit: ${limit}`;
+  }
+
+  // VD: GET /products/123
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return `Lấy sản phẩm có id là ${id}`;
+  }
+}
+```
+
+### 2. Controller
+Controllers chịu trách nhiệm gắn kết các Route và gọi đến Service tương ứng.
 
 Bạn có thể tạo một controller mới bằng CLI:
 ```bash
 $ nest g controller users
 ```
 
-**Ví dụ một Controller cơ bản:**
+**Ví dụ:**
 ```typescript
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 
-@Controller('users') // Base route là /users
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get() // Xử lý GET /users
+  @Get()
   findAll() {
     return this.usersService.findAll();
   }
 
-  @Get(':id') // Xử lý GET /users/:id (VD: /users/1)
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
-  }
-
-  @Post() // Xử lý POST /users
+  @Post()
   create(@Body() createUserDto: any) {
     return this.usersService.create(createUserDto);
   }
 }
 ```
 
-### 2. Service (Xử lý logic nghiệp vụ)
+### 3. Service (Xử lý logic nghiệp vụ)
 Services được dùng để chứa các logic xử lý nghiệp vụ, thao tác với database và có thể được tiêm (inject) vào controller.
 
 Tạo một service mới bằng CLI:
@@ -139,7 +166,7 @@ export class UsersService {
 }
 ```
 
-### 3. Đăng ký vào Module
+### 4. Đăng ký vào Module
 Để ứng dụng nhận diện được, bạn cần đăng ký controller và service vào một module (thường CLI sẽ tự động làm điều này cho bạn nếu bạn dùng lệnh `nest g`):
 
 ```typescript
