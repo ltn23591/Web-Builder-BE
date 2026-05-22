@@ -184,6 +184,9 @@ export class AppModule {}
 ## Hướng dẫn sử dụng Prisma ORM
 Vui lòng xem chi tiết tại [Tài liệu hướng dẫn Prisma](./prisma/README.md).
 
+## Hệ thống Authentication (Better Auth)
+Vui lòng xem chi tiết cách dùng API đăng nhập/đăng ký tại [Tài liệu hướng dẫn Better Auth](./src/auth/README.md).
+
 ## Tài nguyên
 
 Dưới đây là một số tài nguyên hữu ích khi làm việc với NestJS:

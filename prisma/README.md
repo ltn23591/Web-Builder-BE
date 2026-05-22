@@ -51,3 +51,25 @@ export class UsersService {
   }
 }
 ```
+
+## 5. Migration (Dành cho làm việc nhóm / Môi trường Production)
+Lệnh `npx prisma db push` ở trên rất tiện lợi để làm nhanh (prototyping), nhưng nó sẽ không lưu lại lịch sử thay đổi của Database.
+Để làm việc chuyên nghiệp, theo dõi được lịch sử các phiên bản thay đổi của CSDL, bạn nên dùng lệnh `migrate`.
+
+### Cách tạo Migration:
+Mỗi khi bạn thêm/sửa/xoá bảng trong `schema.prisma`, thay vì dùng `db push`, hãy chạy lệnh sau ở terminal:
+```bash
+$ npx prisma migrate dev --name ten_cua_thay_doi
+```
+*(Ví dụ: `npx prisma migrate dev --name init_user_table`)*
+
+Lệnh này sẽ tự động:
+1. Tạo một thư mục `prisma/migrations` chứa các file `.sql` ghi lại lịch sử thay đổi.
+2. Chạy file SQL đó lên database thực tế (thay thế chức năng của db push).
+3. Tự động chạy luôn `npx prisma generate` cho bạn.
+
+### Cách apply Migration lên Server (Production):
+Khi mang source code này lên Server (VPS/Hosting), bạn không dùng lệnh `dev` để tránh vô tình reset database thật. Thay vào đó, hãy chạy lệnh sau để áp dụng các file `.sql` vào CSDL của server:
+```bash
+$ npx prisma migrate deploy
+```

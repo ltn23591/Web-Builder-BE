@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
+import { auth } from './auth/auth.config';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import { PrismaModule } from './prisma/prisma.module';
       synchronize: true,
     }),
     PrismaModule,
+    AuthModule.forRoot({ auth }),
   ],
   controllers: [AppController],
   providers: [AppService],
