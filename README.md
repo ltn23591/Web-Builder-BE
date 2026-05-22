@@ -5,7 +5,7 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center">Một framework <a href="http://nodejs.org" target="_blank">Node.js</a> tiên tiến để xây dựng các ứng dụng server-side hiệu quả và có khả năng mở rộng.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
@@ -21,78 +21,162 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Mô tả
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Kho lưu trữ mẫu TypeScript của framework [Nest](https://github.com/nestjs/nest).
 
-## Project setup
+## Cài đặt dự án
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+## Biên dịch và chạy dự án
 
 ```bash
-# development
+# môi trường phát triển (development)
 $ npm run start
 
-# watch mode
+# chế độ watch mode
 $ npm run start:dev
 
-# production mode
+# môi trường sản xuất (production)
 $ npm run start:prod
 ```
 
-## Run tests
+## Chạy test
 
 ```bash
-# unit tests
+# test cục bộ (unit tests)
 $ npm run test
 
-# e2e tests
+# test e2e
 $ npm run test:e2e
 
-# test coverage
+# kiểm tra mức độ bao phủ của test (test coverage)
 $ npm run test:cov
 ```
 
-## Deployment
+## Triển khai (Deployment)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Khi bạn đã sẵn sàng triển khai ứng dụng NestJS của mình lên production, có một số bước chính bạn có thể thực hiện để đảm bảo nó chạy hiệu quả nhất có thể. Hãy tham khảo [tài liệu triển khai](https://docs.nestjs.com/deployment) để biết thêm thông tin.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Nếu bạn đang tìm kiếm một nền tảng dựa trên đám mây để triển khai ứng dụng NestJS của mình, hãy xem [Mau](https://mau.nestjs.com), nền tảng chính thức của chúng tôi để triển khai các ứng dụng NestJS trên AWS. Mau giúp việc triển khai trở nên đơn giản và nhanh chóng, chỉ yêu cầu vài bước cơ bản:
 
 ```bash
 $ npm install -g @nestjs/mau
 $ mau deploy
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Với Mau, bạn có thể triển khai ứng dụng của mình chỉ trong vài cú nhấp chuột, cho phép bạn tập trung vào việc xây dựng tính năng thay vì quản lý cơ sở hạ tầng.
 
-## Resources
+## Cách sử dụng Controller, Route và Service
 
-Check out a few resources that may come in handy when working with NestJS:
+NestJS tuân theo kiến trúc Module, Controller và Service. Dưới đây là cách sử dụng cơ bản:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 1. Controller (Định tuyến - Routing)
+Controllers có nhiệm vụ xử lý các HTTP request từ client và trả về response. Chúng định nghĩa các Route (đường dẫn).
 
-## Support
+Bạn có thể tạo một controller mới bằng CLI:
+```bash
+$ nest g controller users
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Ví dụ một Controller cơ bản:**
+```typescript
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { UsersService } from './users.service';
 
-## Stay in touch
+@Controller('users') // Base route là /users
+export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+  @Get() // Xử lý GET /users
+  findAll() {
+    return this.usersService.findAll();
+  }
+
+  @Get(':id') // Xử lý GET /users/:id (VD: /users/1)
+  findOne(@Param('id') id: string) {
+    return this.usersService.findOne(id);
+  }
+
+  @Post() // Xử lý POST /users
+  create(@Body() createUserDto: any) {
+    return this.usersService.create(createUserDto);
+  }
+}
+```
+
+### 2. Service (Xử lý logic nghiệp vụ)
+Services được dùng để chứa các logic xử lý nghiệp vụ, thao tác với database và có thể được tiêm (inject) vào controller.
+
+Tạo một service mới bằng CLI:
+```bash
+$ nest g service users
+```
+
+**Ví dụ một Service cơ bản:**
+```typescript
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class UsersService {
+  private readonly users = [];
+
+  findAll() {
+    return this.users;
+  }
+
+  findOne(id: string) {
+    return this.users.find(user => user.id === id);
+  }
+
+  create(user: any) {
+    this.users.push(user);
+    return user;
+  }
+}
+```
+
+### 3. Đăng ký vào Module
+Để ứng dụng nhận diện được, bạn cần đăng ký controller và service vào một module (thường CLI sẽ tự động làm điều này cho bạn nếu bạn dùng lệnh `nest g`):
+
+```typescript
+import { Module } from '@nestjs/common';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
+
+@Module({
+  controllers: [UsersController],
+  providers: [UsersService],
+})
+export class AppModule {}
+```
+
+## Tài nguyên
+
+Dưới đây là một số tài nguyên hữu ích khi làm việc với NestJS:
+
+- Truy cập [Tài liệu NestJS](https://docs.nestjs.com) để tìm hiểu thêm về framework.
+- Để đặt câu hỏi và nhận hỗ trợ, vui lòng truy cập [kênh Discord](https://discord.gg/G7Qnnhy) của chúng tôi.
+- Để tìm hiểu sâu hơn và có thêm kinh nghiệm thực tế, hãy xem các [khóa học](https://courses.nestjs.com/) video chính thức của chúng tôi.
+- Triển khai ứng dụng của bạn lên AWS với sự trợ giúp của [NestJS Mau](https://mau.nestjs.com) chỉ trong vài cú nhấp chuột.
+- Trực quan hóa biểu đồ ứng dụng của bạn và tương tác với ứng dụng NestJS theo thời gian thực bằng cách sử dụng [NestJS Devtools](https://devtools.nestjs.com).
+- Cần hỗ trợ cho dự án của bạn (bán thời gian đến toàn thời gian)? Hãy xem [hỗ trợ doanh nghiệp](https://enterprise.nestjs.com) chính thức của chúng tôi.
+- Để luôn cập nhật thông tin mới nhất, hãy theo dõi chúng tôi trên [X](https://x.com/nestframework) và [LinkedIn](https://linkedin.com/company/nestjs).
+- Đang tìm việc, hay có công việc muốn tuyển dụng? Hãy xem [Bảng việc làm](https://jobs.nestjs.com) chính thức của chúng tôi.
+
+## Hỗ trợ
+
+Nest là một dự án mã nguồn mở theo giấy phép MIT. Dự án có thể phát triển nhờ vào các nhà tài trợ và sự ủng hộ của những người ủng hộ tuyệt vời. Nếu bạn muốn tham gia cùng họ, vui lòng [đọc thêm tại đây](https://docs.nestjs.com/support).
+
+## Liên hệ
+
+- Tác giả - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
+## Giấy phép
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Nest được [cấp phép theo MIT](https://github.com/nestjs/nest/blob/master/LICENSE).
