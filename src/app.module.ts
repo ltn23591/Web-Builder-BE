@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -13,10 +14,11 @@ import { AppService } from './app.service';
       port: 5432,
       username: 'postgres',
       password: '123456',
-      database: 'postgres',
+      database: 'site_builder',
       autoLoadEntities: true,
       synchronize: true,
     }),
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

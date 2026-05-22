@@ -181,6 +181,9 @@ import { UsersService } from './users/users.service';
 export class AppModule {}
 ```
 
+## Hướng dẫn sử dụng Prisma ORM
+Vui lòng xem chi tiết tại [Tài liệu hướng dẫn Prisma](./prisma/README.md).
+
 ## Tài nguyên
 
 Dưới đây là một số tài nguyên hữu ích khi làm việc với NestJS:
